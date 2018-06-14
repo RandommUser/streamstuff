@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>stuff</title>
+<link rel="stylesheet" href="fancy.css">
+
+<script src="js/GW2.class.js"></script>
+<script src="js/View.class.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+
+<script>
+var seasonData;
+var updatedRating;
+
+var startLookUp = function(){
+	FW_GW2().getCustom(APIkey,'pvp/seasons','',function(data,events){
+		seasonData = data[data.length-1];
+		getSeasonRating(seasonData);
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+};
+
+function getSeasonRating(season_id){
+	console.log(season_id);
+	FW_GW2().getCustom(APIkey,'pvp/standings','',function(data,events){
+		//console.log(data);
+		for(i=0;i<data.length;i++){
+			if(data[i].season_id == season_id){
+				if(startRating == null){
+					startRating = data[i].current.rating;
+					updatedRating = data[i].current.rating;
+					console.log(startRating);
+					setInterval(function(){getSeasonRating(seasonData);}, updateTimer * 1000);
+				}
+				if(updatedRating != data[i].current.rating){
+					updatedRating = data[i].current.rating;
+				}
+				updateView();
+				break;
+			}
+		}
+		$('#loading').css('display','none');
+	},function(status,text){
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+}
+
+function updateView(){
+	var difference = updatedRating - startRating;
+	$("p#rating").text(updatedRating + ' (' + difference + ')');
+	if(difference>0)
+	{
+		$("p#rating").css('color',posiColor).text(updatedRating + ' (+' + difference + ')');
+	}
+	else if(difference<0){
+		$("p#rating").css('color',negaColor).text(updatedRating + ' (' + difference + ')');
+	}
+	else{
+		$("p#rating").css('color',neutColor).text(updatedRating + ' (' + difference + ')');
+	}
+}
+</script>
+
+</head>
+<body onLoad="startLookUp()">
+
+<div id="loading"><p id="error"></p></div>
+
+<p id="rating"></p>
+
+</body>
+</html>
