@@ -1,0 +1,29 @@
+Installation:
+
+1) 
+- open up js/settings.js
+- change the settings, SPECIALLY THE API KEY
+- save and close
+
+2)
+- open OBS
+- go to your scene
+- add "Browser source", local, find the "rating difference.html"
+- width: 300, height: 100 is good enough
+- NOTE: turn OFF "shutdown source when not visible", or the rating counter will reset progress when switching scenes (if you do that)
+
+3) Go play some games.
+
+
+
+------
+
+Need help? 
+
+Contact me in discord, @RandommUser#2470
+You can find me in https://discord.gg/guildwars2
+
+Want to customize this?
+
+Go ahead. I did not make the API fetcher, but every other function is done by me and you can edit it as you wish.
+If you need help doing this just contact me as instructed above.
