@@ -3,8 +3,8 @@ var APIkey = "EC8C8CC2-1DE3-0C40-BCB3-11EB92ABB8BF704AED47-6AD2-4298-867B-307AA0
 var killsColor = "#91e410"
 var rankColor = "#de9f28"
 
-var updateTimer = 30; // in seconds. NOTE: the API itself gets updated as set interval and using fequent request gets you ratelimited. Good pick is between 30-60 seconds.
-var switchTimer = 15; // in seconds.
+var updateTimer = 60; // in seconds. NOTE: the API itself gets updated as set interval and using fequent request gets you ratelimited. Good pick is between 30-60 seconds.
+var switchTimer = 30; // in seconds. Timer between the different stats
 
 var showRank = true; // show rank
 var showKills = true; // show kills

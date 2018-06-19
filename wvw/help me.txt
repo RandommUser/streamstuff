@@ -8,11 +8,11 @@ Installation:
 2)
 - open OBS
 - go to your scene
-- add "Browser source", local, find the "rating difference.html"
+- add "Browser source", local, find the "stats.html"
 - width: 300, height: 100 is good enough
 - NOTE: turn OFF "shutdown source when not visible", or the rating counter will reset progress when switching scenes (if you do that)
 
-3) Go play some games.
+3) Go play some WvW.
 
 
 
