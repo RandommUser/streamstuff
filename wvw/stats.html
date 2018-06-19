@@ -1,0 +1,198 @@
+<html>
+<head>
+<title>stuff</title>
+<link rel="stylesheet" href="fancy.css">
+
+<script src="js/GW2.class.js"></script>
+<script src="js/View.class.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/jquery-3.1.1.min.js"></script>
+
+<script>
+var startingTime;
+var startingRank;
+var startingKills;
+var updatedKills;
+var updatedRank;
+
+var timedLoop;
+var timedLoop2;
+
+var startLookUp = function(){
+if(showRank && showKills){
+
+FW_GW2().getCustom(APIkey,'account','',function(data,events){
+	startingRank = data.wvw_rank;
+	updatedRank = startingRank;
+	startingTime = new Date();
+	updateView('rank');
+	
+	$("div#loading").css('display','none');
+},function(status,text){
+	console.log('error',status,text);
+	$("p#error").css('color','red').text('error: ' + status);
+});
+
+FW_GW2().getCustom(APIkey,'account/achievements','283',function(data,events){
+		if(startingKills == null){
+		startingKills = data[0].current;
+		updatedKills = startingKills;
+		}
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+});
+
+timedLoop = setInterval(function(){FW_GW2().getCustom(APIkey,'account','',function(data,events){
+		if(startingRank == null){
+		startingRank = data.wvw_rank;
+		updatedRank = startingRank;
+		startingTime = new Date();
+		}
+		else{
+		updatedRank = data.wvw_rank;
+		}
+		updateView('rank');
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+}, updateTimer * 1000);
+
+setTimeout(function(){timedLoop2 = setInterval(function(){FW_GW2().getCustom(APIkey,'account/achievements','283',function(data,events){
+		if(startingKills == null){
+		startingKills = data[0].current;
+		updatedKills = startingKills;
+		startingTime = new Date();
+		}
+		else{
+		updatedKills = data[0].current;
+		}
+		updateView('kills');
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+}, updateTimer * 1000);
+},switchTimer * 1000);
+
+}
+else  if(showRank){
+
+FW_GW2().getCustom(APIkey,'account','',function(data,events){
+	startingRank = data.wvw_rank;
+	updatedRank = startingRank;
+	startingTime = new Date();
+	updateView('rank');
+	
+	$("div#loading").css('display','none');
+},function(status,text){
+	console.log('error',status,text);
+	$("p#error").css('color','red').text('error: ' + status);
+});
+
+timedLoop = setInterval(function(){FW_GW2().getCustom(APIkey,'account','',function(data,events){
+		if(startingRank == null){
+		startingRank = data.wvw_rank;
+		updatedRank = startingRank;
+		startingTime = new Date();
+		}
+		else{
+		updatedRank = data.wvw_rank;
+		}
+		updateView('rank');
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+}, updateTimer * 1000);
+}
+else if(showKills){
+
+FW_GW2().getCustom(APIkey,'account/achievements','283',function(data,events){
+		if(startingKills == null){
+		startingTime = new Date();
+		startingKills = data[0].current;
+		updatedKills = startingKills;
+		
+		$("div#loading").css('display','none');
+		}
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+});
+
+
+timedLoop = setInterval(function(){FW_GW2().getCustom(APIkey,'account/achievements','283',function(data,events){
+		if(startingKills == null){
+		startingKills = data[0].current;
+		updatedKills = startingKills;
+		startingTime = new Date();
+		}
+		else{
+		updatedKills = data[0].current;
+		}
+		updateView('kills');
+	},function(status,text){
+		console.log('error',status,text);
+		$("p#error").css('color','red').text('error: ' + status);
+	});
+}, updateTimer * 1000);
+}
+
+};
+
+function updateLoop(){	//?
+	updateView('rank');
+	
+
+
+}
+
+
+function updateView(entry){
+	if(entry == "rank"){
+		if(showGainedRanks){
+			var difference = updatedRank - startingRank;
+			$("p#display").css('color',rankColor).text(updatedRank + ' (+' + difference + ')');
+			$("p#icon").addClass('rank');
+			$("p#icon").removeClass('kills');
+		}
+		else{
+			$("p#display").css('color',rankColor).text(updatedRank);
+			$("p#icon").addClass('rank');
+			$("p#icon").removeClass('kills');
+		}
+	}
+	else if(entry == "kills"){
+		if(showAverageKills){
+			var difference = Math.round((updatedKills - startingKills) / timePassed());
+			$("p#display").css('color',killsColor).text(updatedKills + ' (+' + difference + '/hr)');
+			$("p#icon").addClass('kills');
+			$("p#icon").removeClass('rank');
+		}
+		else{
+			$("p#display").css('color',killsColor).text(updatedKills);
+			$("p#icon").addClass('kills');
+			$("p#icon").removeClass('rank');
+		}
+	}
+}
+
+function timePassed(){ // hours
+	var passed  = Date.now();
+	passed = passed - startingTime;
+	passed = passed / 1000 / 60 / 60;
+	return passed;
+}
+</script>
+
+</head>
+<body onLoad="startLookUp()">
+
+<div id="loading"><p id="error"></p></div>
+
+<p id="icon"></p><p id="display"></p>
+
+</body>
+</html>

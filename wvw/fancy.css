@@ -1,0 +1,69 @@
+body{
+	background:rgba(0,0,0,0);
+	margin: 0;
+	padding:0;
+}
+
+div#loading{
+	position:absolute;
+	margin:3px 30px;
+	width:30px;
+	height: 30px;
+	
+	animation-name:loading1;
+	animation-duration:4s;
+	animation-iteration-count: infinite;
+}
+p#error{
+	font-size:20px;
+	font-weight:bold;
+}
+
+p#display{
+	font-size: 60px;
+	transition: .5s color;
+	font-family: BaarSophia;
+	text-shadow: #333 1px 1px 4px;
+	display:inline;
+	margin:0;
+}
+
+#icon{
+	display:inline-block;
+	height:50px;
+	width:50px;
+	background-size:cover;
+	margin:0;
+	position:relative;
+	top:5px;
+}
+
+.rank{
+	background: url('images/ranks1.png');
+}
+.kills{
+		background: url('images/kills1.png');
+}
+
+
+@font-face {
+    font-family: BaarSophia;
+    src: url(BAARS.TTF);
+}
+
+
+@keyframes loading{
+	0%{border-radius:50% 50% 50% 20%;background:red;margin-left:3px;}
+	25%{border-radius:10% 50% 50% 50%;;background:yellow;}
+	50%{border-radius:50% 20% 50% 50%;;background:blue;margin-left:200px;}
+	75%{border-radius:50% 50% 20% 50%;;background:green;}
+	100%{border-radius:50% 50% 50% 20%;;background:red;margin-left:3px;}
+}
+
+@keyframes loading1{
+	0%{border-radius:50%;border:20px inset;border-color: #fff #333 #333 #333;}
+	25%{border-color: #333 #fff #333 #333;}
+	50%{border-color: #333 #333 #fff #333;}
+	75%{border-color: #333 #333 #333 #fff;}
+	100%{border-radius:50%;border:20px inset;border-color: #fff #333 #333 #333;}
+}
